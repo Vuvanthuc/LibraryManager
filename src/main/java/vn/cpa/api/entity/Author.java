@@ -22,4 +22,10 @@ public class Author {
 
     @Column(name = "note")
     private String note;
+
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "position")
+    private String position;
 }

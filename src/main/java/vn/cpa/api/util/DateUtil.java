@@ -51,6 +51,15 @@ public class DateUtil {
         }
     }
 
+    public static Timestamp getCurrentTimestamp() {
+        return new Timestamp(new Date().getTime());
+    }
+
+    public static Date getCurrentTimes() {
+        return new Date();
+    }
+
+
     public static Date formatFromDate(Date toDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(FROM_DATE_FORMAT);
         String strDate = dateFormat.format(toDate);

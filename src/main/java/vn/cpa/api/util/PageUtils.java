@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import vn.cpa.api.response.AbsPagingResponse;
 
+import javax.persistence.Query;
+
 public class PageUtils {
     public static Pageable buildPage(Integer pageNo, Integer pageSize) {
         return buildPageRequest(pageNo, pageSize);
@@ -35,5 +37,17 @@ public class PageUtils {
         headers.set(PagingHeaders.PAGE_NUMBER.getName(), String.valueOf(response.getPageNumber()));
         headers.set(PagingHeaders.PAGE_TOTAL.getName(), String.valueOf(response.getPageTotal()));
         return headers;
+    }
+
+    public static Query buildQuery(Pageable pageable, Query query) {
+        if (pageable.getPageSize() > 0) {
+            query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+            query.setMaxResults(pageable.getPageSize());
+        } else {
+            query.setFirstResult(0);
+            query.setMaxResults(Integer.MAX_VALUE);
+        }
+
+        return query;
     }
 }
