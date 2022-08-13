@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "publish_company")
 public class PublishCompany {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_company")
     private Long idPub;
@@ -34,6 +34,9 @@ public class PublishCompany {
 
     @Column(name = "date_founding")
     private Date dateFounding;
+
+    @Column(name = "code")
+    private String code;
 
 }
 
