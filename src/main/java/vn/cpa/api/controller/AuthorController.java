@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import vn.cpa.api.dto.ApiPageDto;
 import vn.cpa.api.dto.ApiResponseDto;
 import vn.cpa.api.exception.NotFoundException;
 import vn.cpa.api.request.AuthorCreateRequest;
@@ -57,7 +58,7 @@ public class AuthorController {
             @Spec(path = "keyword", params = "keyword", spec = Like.class)
     })AuthorFindAllRequest request) throws NotFoundException {
         Page<AuthorFindAllResponse> response =  authorService.findAll(request);
-        return ApiResponseDto.createdWithMessage("Lưu tác giả thành công", HttpStatus.CREATED);
+        return ApiResponseDto.ok(ApiPageDto.build(response), "Thành công");
     }
 
     @GetMapping("find-detail")

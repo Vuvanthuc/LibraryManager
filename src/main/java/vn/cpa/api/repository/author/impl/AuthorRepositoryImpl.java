@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
 
     @Override
     public Page<AuthorFindAllResponse> findAll(AuthorFindAllRequest request, Pageable pageable) {
+
         StringBuilder sb = new StringBuilder();
         sb.append("select au.id_author, au.name_author, au.code , au.address , au.position, au.note " +
                 " from author as au where 1 = 1 ");
@@ -42,7 +44,7 @@ public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
 
         Query query = entityManager.createNativeQuery(sb.toString());
 
-        PageUtils.buildQuery(pageable, query);
+//        PageUtils.buildQuery(pageable, query);
 
         if (StringUtils.isNotBlank(request.getKeyword())) {
             query.setParameter("keyword", request.getKeyword());
@@ -61,15 +63,13 @@ public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
             result.add(res);
         }
 
-//        List result = EntityMapper.mapper(query, sb.toString(), AuthorFindAllResponse.class);
-
         return new PageImpl<>(result, pageable, countSearch(request).longValue());
     }
 
-    private BigDecimal countSearch(AuthorFindAllRequest request) {
+    private BigInteger countSearch(AuthorFindAllRequest request) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("select au.name_author as name, au.code as code, au.address as address, au.position as position, au.note as note " +
+        sb.append("select count(0) " +
                 "from author au where 1 = 1 ");
 
         if (StringUtils.isNotBlank(request.getKeyword())) {
@@ -82,7 +82,7 @@ public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
             query.setParameter("keyword", request.getKeyword());
         }
 
-        return (BigDecimal) query.getSingleResult();
+        return (BigInteger) query.getSingleResult();
 
     }
 
@@ -108,7 +108,7 @@ public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
 
             sb.append(request.getSortOrder());
         } else {
-            sb.append(" ORDER BY a.id_author DESC");
+            sb.append(" ORDER BY au.id_author DESC");
         }
     }
 }
